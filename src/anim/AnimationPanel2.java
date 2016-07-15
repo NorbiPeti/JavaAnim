@@ -1,6 +1,8 @@
 package anim;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,6 +21,19 @@ public class AnimationPanel2 extends JPanel {
 			Random rand = new Random();
 			x = rand.nextInt(480) + 10;
 			y = rand.nextInt(480) + 10;
+			boolean cont = true;
+			while (cont) {
+				cont = false;
+				for (Ball ball : balls) {
+					if (ball.x - 10 < this.x + 10 && ball.x + 10 > this.x - 10) {
+						if (ball.y - 10 < this.y + 10 && ball.y + 10 > this.y - 10) {
+							x = rand.nextInt(480) + 10;
+							y = rand.nextInt(480) + 10;
+							cont = true;
+						}
+					}
+				}
+			}
 		}
 
 		private void draw(Graphics g, long time) {
@@ -26,21 +41,27 @@ public class AnimationPanel2 extends JPanel {
 			g.fillOval((int) x, (int) y, 20, 20);
 			g.setColor(Color.BLACK);
 			g.drawOval((int) x, (int) y, 20, 20);
-			if (time % speed == 0)
-				move();
 		}
 
-		private void move() {
+		public void move() {
 			x += Math.sin(angle) * 10;
 			y += Math.cos(angle) * 10;
 			if (x > 490)
 				angle += Math.PI / 2;
+			if (x > 500)
+				x = 480;
 			if (y > 490)
 				angle += Math.PI / 2;
+			if (y > 500)
+				y = 480;
 			if (x < 10)
 				angle += Math.PI / 2;
+			if (x < 0)
+				x = 10;
 			if (y < 10)
 				angle += Math.PI / 2;
+			if (y < 0)
+				y = 10;
 			for (Ball ball : balls) {
 				if (this == ball)
 					continue;
@@ -75,7 +96,7 @@ public class AnimationPanel2 extends JPanel {
 
 		lastDrawTime = time;
 
-		repaint();
+		// repaint();
 	}
 
 	private static ArrayList<Ball> balls = new ArrayList<>();
@@ -84,7 +105,18 @@ public class AnimationPanel2 extends JPanel {
 		JFrame frame = new JFrame("Animation");
 		frame.setMinimumSize(new Dimension(540, 560));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(new AnimationPanel2());
+		AnimationPanel2 ap = new AnimationPanel2();
+		frame.add(ap);
 		frame.setVisible(true);
+		Timer timer = new Timer(1000 / 30, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (Ball ball : balls)
+					ball.move();
+				ap.repaint();
+			}
+		});
+		timer.start();
 	}
 }
