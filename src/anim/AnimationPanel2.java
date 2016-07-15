@@ -78,8 +78,7 @@ public class AnimationPanel2 extends JPanel {
 					this.y += Math.cos(ball.angle) * 10;
 					ball.x += Math.sin(this.angle) * 10;
 					ball.y += Math.cos(this.angle) * 10;
-					System.out.println(Math.sin(ball.angle) * 10 + " " + (Math.cos(ball.angle) * 10) + " "
-							+ (Math.sin(this.angle) * 10) + " " + (Math.cos(this.angle) * 10));
+					//Restart loop to detect moved balls
 				}
 			}
 		}
