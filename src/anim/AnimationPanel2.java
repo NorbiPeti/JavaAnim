@@ -11,6 +11,8 @@ import javax.swing.*;
 public class AnimationPanel2 extends JPanel {
 	private static long lastDrawTime = System.nanoTime();
 
+	public static final double Diam = Math.sqrt(200) / 2; // 10*10+10*10
+
 	private static class Ball {
 		private double angle = Math.random();
 		private double x = 10;
@@ -46,28 +48,38 @@ public class AnimationPanel2 extends JPanel {
 		public void move() {
 			x += Math.sin(angle) * 10;
 			y += Math.cos(angle) * 10;
+		}
+
+		public void collide() {
 			if (x > 490)
-				angle += Math.PI / 2;
+				angle = Math.PI * 2 - angle;
 			if (x > 500)
 				x = 480;
-			if (y > 490)
-				angle += Math.PI / 2;
+			if (y > 490) {
+				angle = Math.PI - angle;
+			}
 			if (y > 500)
 				y = 480;
-			if (x < 10)
-				angle += Math.PI / 2;
+			if (x < 10) {
+				angle = Math.PI * 2 - angle;
+			}
 			if (x < 0)
 				x = 10;
-			if (y < 10)
-				angle += Math.PI / 2;
+			if (y < 10) {
+				angle = Math.PI - angle;
+			}
 			if (y < 0)
 				y = 10;
 			for (Ball ball : balls) {
 				if (this == ball)
 					continue;
-				if (ball.x - 10 < this.x + 10 && ball.x + 10 > this.x - 10) {
-					if (ball.y - 10 < this.y + 10 && ball.y + 10 > this.y - 10)
-						angle += Math.PI;
+				if (Math.pow(ball.x - this.x, 2) + Math.pow(ball.y - this.y, 2) <= Math.pow(AnimationPanel2.Diam, 2)) { // http://gamedevelopment.tutsplus.com/tutorials/when-worlds-collide-simulating-circle-circle-collisions--gamedev-769
+					this.x += Math.sin(ball.angle) * 10; // Alt+Shift+I
+					this.y += Math.cos(ball.angle) * 10;
+					ball.x += Math.sin(this.angle) * 10;
+					ball.y += Math.cos(this.angle) * 10;
+					System.out.println(Math.sin(ball.angle) * 10 + " " + (Math.cos(ball.angle) * 10) + " "
+							+ (Math.sin(this.angle) * 10) + " " + (Math.cos(this.angle) * 10));
 				}
 			}
 		}
@@ -95,8 +107,6 @@ public class AnimationPanel2 extends JPanel {
 		g.drawString(String.valueOf(1000000000 / (time - lastDrawTime)), 20, 30);
 
 		lastDrawTime = time;
-
-		// repaint();
 	}
 
 	private static ArrayList<Ball> balls = new ArrayList<>();
@@ -114,6 +124,9 @@ public class AnimationPanel2 extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				for (Ball ball : balls)
 					ball.move();
+				ap.repaint();
+				for (Ball ball : balls)
+					ball.collide();
 				ap.repaint();
 			}
 		});
