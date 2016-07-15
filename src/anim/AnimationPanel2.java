@@ -44,12 +44,9 @@ public class AnimationPanel2 extends JPanel {
 			for (Ball ball : balls) {
 				if (this == ball)
 					continue;
-				if (ball.x - 10 > this.x + 10 && ball.x + 10 > this.x - 10) {
-					if (ball.y - 10 > this.y + 10 && ball.y + 10 > this.y - 10)
-						angle += Math.PI / 2;
-					System.out.println(angle);
-					System.out.println(x);
-					System.out.println(y);
+				if (ball.x - 10 < this.x + 10 && ball.x + 10 > this.x - 10) {
+					if (ball.y - 10 < this.y + 10 && ball.y + 10 > this.y - 10)
+						angle += Math.PI;
 				}
 			}
 		}
