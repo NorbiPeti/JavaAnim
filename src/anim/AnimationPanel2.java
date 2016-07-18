@@ -70,6 +70,9 @@ public class AnimationPanel2 extends JPanel {
 			}
 			if (y < 0)
 				y = 10;
+			boolean restart = true;
+			// while (restart) {
+			// restart = false;
 			for (Ball ball : balls) {
 				if (this == ball)
 					continue;
@@ -78,10 +81,14 @@ public class AnimationPanel2 extends JPanel {
 					this.y += Math.cos(ball.angle) * 10;
 					ball.x += Math.sin(this.angle) * 10;
 					ball.y += Math.cos(this.angle) * 10;
-					//Restart loop to detect moved balls
+					// Restart loop to detect moved balls
+					// restart = true;
+					// break;
 				}
+				// }
 			}
 		}
+
 	}
 
 	public AnimationPanel2() {
