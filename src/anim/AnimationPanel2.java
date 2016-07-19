@@ -77,6 +77,8 @@ public class AnimationPanel2 extends JPanel {
 				if (this == ball)
 					continue;
 				if (Math.pow(ball.x - this.x, 2) + Math.pow(ball.y - this.y, 2) <= Math.pow(AnimationPanel2.Diam, 2)) { // http://gamedevelopment.tutsplus.com/tutorials/when-worlds-collide-simulating-circle-circle-collisions--gamedev-769
+					this.angle += Math.PI; //TODO
+					ball.angle += Math.PI;
 					this.x += Math.sin(ball.angle) * 10; // Alt+Shift+I
 					this.y += Math.cos(ball.angle) * 10;
 					ball.x += Math.sin(this.angle) * 10;
