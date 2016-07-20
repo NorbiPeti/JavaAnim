@@ -11,7 +11,7 @@ import javax.swing.*;
 public class AnimationPanel2 extends JPanel {
 	private static long lastDrawTime = System.nanoTime();
 
-	public static final double Diam = Math.sqrt(200) / 2; // 10*10+10*10
+	public static final double Diam = Math.sqrt(200); // 10*10+10*10
 
 	private static class Ball {
 		private double angle = Math.random();
@@ -70,31 +70,25 @@ public class AnimationPanel2 extends JPanel {
 			}
 			if (y < 0)
 				y = 10;
-			boolean restart = true;
-			// while (restart) {
-			// restart = false;
 			for (Ball ball : balls) {
 				if (this == ball)
 					continue;
 				if (Math.pow(ball.x - this.x, 2) + Math.pow(ball.y - this.y, 2) <= Math.pow(AnimationPanel2.Diam, 2)) { // http://gamedevelopment.tutsplus.com/tutorials/when-worlds-collide-simulating-circle-circle-collisions--gamedev-769
-					this.angle += Math.PI; //TODO
-					ball.angle += Math.PI;
 					this.x += Math.sin(ball.angle) * 10; // Alt+Shift+I
 					this.y += Math.cos(ball.angle) * 10;
 					ball.x += Math.sin(this.angle) * 10;
 					ball.y += Math.cos(this.angle) * 10;
-					// Restart loop to detect moved balls
-					// restart = true;
-					// break;
+					double tmpangle = this.angle;
+					this.angle = ball.angle;
+					ball.angle = tmpangle;
 				}
-				// }
 			}
 		}
 
 	}
 
 	public AnimationPanel2() {
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 344; i++) {
 			balls.add(new Ball());
 		}
 	}
